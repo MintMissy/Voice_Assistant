@@ -1,7 +1,6 @@
 import speech_recognition
 import pyttsx3
 import subprocess
-import sys
 from time import sleep
 
 listener = speech_recognition.Recognizer()
@@ -24,7 +23,6 @@ def take_command():
             command = command.lower()
             print(command)
             if 'assistant' in command:
-                print(command)
                 command = command.replace('assistant', '')
                 return command
     except Exception:
@@ -76,6 +74,7 @@ talk('Hello Mint Missy')
 subprocess.Popen("C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Iriun Webcam\Iriun Webcam.lnk", shell=True)
 
 sleep(15)
+print("I am ready :3")
 
 while True:
     run_assistant()
