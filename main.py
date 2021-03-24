@@ -69,11 +69,6 @@ def run_assistant():
                     "C:\\Users\Dawid\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Discord Inc\Discord.lnk",
                     shell=True)
 
-            elif 'microphone' in command:
-                talk('opening microphone')
-                program = subprocess.Popen(
-                    "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Iriun Webcam\Iriun Webcam.lnk", shell=True)
-
 
 while True:
     run_assistant()
