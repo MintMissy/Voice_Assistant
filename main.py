@@ -1,7 +1,5 @@
 # Microphone detecting
 import speech_recognition
-# Open application's
-import subprocess
 # Time modules
 import datetime
 import time
@@ -12,16 +10,12 @@ import os
 import random
 # Google text to speech
 from gtts import gTTS
-# Working with websites
-from selenium import webdriver
 
 
-def get_current_time():
-    """
-    Get current time
-    :return: current time (hour; minute; AM/PM)
-    """
-    return datetime.datetime.today().strftime("%H:%M %p")
+# Project modules
+import open_application
+import time_functions
+import music_functions
 
 
 def get_microphone():
@@ -75,71 +69,36 @@ def run_assistant():
     if command is not None:
         # Get current time EXAMPLE QUESTION 'what time is it'
         if 'time' in command and 'what' in command:
-            talk(f"it is {get_current_time()}")
+            talk(f"it is {time_functions.get_current_time()}")
 
         elif 'song' in command:
-            # Play music on youtube
             if 'play' in command:
-                driver_path = "C:\\01 Programming\Python\Mintsy Assistant\chromedriver.exe"
-                brave_path = "C:\Program Files\BraveSoftware\Brave-Browser\Application\\brave.exe"
+                music_functions.play_music()
 
-                option = webdriver.ChromeOptions()
-                option.binary_location = brave_path
-                brave_options = "user-data-dir=C:\\Users\Dawid\AppData\Local\BraveSoftware\Brave-Browser\\Music"
-                option.add_argument(brave_options)
-
-                browser = webdriver.Chrome(executable_path=driver_path, options=option)
-
-                driver = browser.get("https://www.youtube.com/watch?v=jJPMnTXl63E")
+        elif 'music' in command:
+            pass
 
         elif 'open' in command:
-            if 'spotify' in command:
-                talk('opening spotify')
-                subprocess.Popen("C:\\Users\Dawid\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Spotify.lnk",
-                                 shell=True)
-
-            elif 'messenger' in command:
-                talk('opening messenger')
-                subprocess.Popen("C:\\Users\Dawid\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Messenger.lnk",
-                                 shell=True)
-
-            elif 'league of legends' in command:
-                talk('opening league of legends')
-                subprocess.Popen(
-                    "C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Riot Games\League of Legends.lnk",
-                    shell=True)
-
-            elif 'brave' in command:
-                talk('opening brave')
-                subprocess.Popen("C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Brave.lnk",
-                                 shell=True)
-
-            elif 'pycharm' in command:
-                talk('opening pycharm')
-                subprocess.Popen("C:\ProgramData\Microsoft\Windows\Start Menu\Programs\JetBrains\PyCharm 2020.3.3.lnk",
-                                 shell=True)
-
-            elif 'webstorm' in command:
-                talk('opening webstorm')
-                subprocess.Popen("C:\ProgramData\Microsoft\Windows\Start Menu\Programs\JetBrains\WebStorm 2020.3.2.lnk",
-                                 shell=True)
-
-            elif 'discord' in command:
-                talk('opening discord')
-                subprocess.Popen(
-                    "C:\\Users\Dawid\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Discord Inc\Discord.lnk",
-                    shell=True)
+            # Open application by command
+            open_application.detect_and_open(command)
 
 
+# Start of the program
 talk('Hello Mint Missy')
-subprocess.Popen("C:\ProgramData\Microsoft\Windows\Start Menu\Programs\Iriun Webcam\Iriun Webcam.lnk", shell=True)
+# Open my phone microphone
+open_application.open_app('microphone')
 
+# Get microphone object
 listener = get_microphone()
 
+# Wait before my phone connect with PC and inform user that he can start saying commands
 time.sleep(8)
 talk('I am ready to go')
 
 while True:
+    # Refreshing microphone object (sometimes it crashes)
     if round(time.time()) % 120 == 0:
         listener = get_microphone()
+
+    # Listening for commands
     run_assistant()
