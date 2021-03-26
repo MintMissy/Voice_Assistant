@@ -10,10 +10,10 @@ option = webdriver.ChromeOptions()
 option.binary_location = brave_path
 option.add_argument(brave_data)
 
-# Apply custom options
-browser = webdriver.Chrome(executable_path=driver_path, options=option)
-
 
 def play_music():
+    # Apply custom options and open browser
+    browser = webdriver.Chrome(executable_path=driver_path, options=option)
+
     # Open music in browser
     driver = browser.get("https://www.youtube.com/watch?v=jJPMnTXl63E")
